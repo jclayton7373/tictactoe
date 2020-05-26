@@ -1,0 +1,276 @@
+<!doctype html>
+<html>
+<link rel="stylesheet" type="text/css" href="tictac.css">
+<head>
+<meta charset="UTF-8">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<title>Index.html</title>
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script type="text/javascript" src="tictactoe.js"></script>
+
+	<script type="text/javascript">
+				      
+		function sanitize(s) {
+			while (s.indexOf("<") != -1) {
+				s = s.replace("<", "");
+			}
+			
+			while (s.indexOf(">") != -1) {
+				s = s.replace(">", "");
+			}
+			
+			while (s.indexOf("\\") != -1) {
+				s = s.replace("\\", "");
+			}
+			
+			if (s == "")
+				s = "placeholder";
+			return s;
+		}
+		
+		function addWinner() {
+			/* Step 1: Make instance of request object...
+			...to make HTTP request after page is loaded*/
+
+    			request = new XMLHttpRequest();
+    			request.credentials = "include";
+    			console.log("1 - request object created");
+
+		    let user = sanitize(document.getElementById("username").value);
+		    let d = new Date();
+		    let ms = d.getTime();
+
+		    // Step 2: Set the URL for the AJAX request to be Heroku app
+
+		    request.open("POST", "https://desolate-brook-01524.herokuapp.com/?user=" + user +
+			"&date=" + d.toLocaleDateString() + " " + d.toLocaleTimeString() + "&time=" + ms.toString(), true);
+
+		    console.log("2 - opened request file");
+
+		    // Step 3: set up event handler/callback
+
+		    request.onreadystatechange = function() {
+			console.log("3 - readystatechange event fired.");
+
+			if (request.readyState == 4 && request.status == 200) {
+
+			    console.log("5 - done");
+			    result = request.responseText;
+
+
+
+			}
+			else if (request.readyState == 4 && request.status != 200) {
+
+			    //document.getElementById("data").innerHTML = "Something is wrong!  Check the logs to see where this went off the rails";
+
+			}
+
+			else if (request.readyState == 3) {
+
+			    //document.getElementById("data").innerHTML = "Too soon!  Try again";
+
+			}
+
+		    }
+		    // Step 4: fire off the HTTP request
+		    request.send();
+		    console.log("4 - Request sent");
+		}
+
+		$(document).ready(function(){
+			play();
+		})
+
+		function play() {
+			var BLANK = '$'
+			var X = 'X'
+			var O = 'O'
+			var board = [BLANK, BLANK, BLANK, BLANK, BLANK, BLANK, BLANK, BLANK, BLANK]
+			var turn = 1;
+			var game_on = true;
+
+			$('.column').click(function(){
+				if (game_on == true && turn < 10){
+					if (turn%2 == 1 && $(this).find('img').attr('src') == 'media/blank.jpg'){
+						$(this).find('img').attr('src', 'media/x.jpg');
+						board[$(this).find('img').attr('id')-1] = X;
+						turn++;
+						game_on = gameOver(board);
+
+						if (game_on == true && turn < 10){
+							id = doTurn(board);
+							board[id] = O;
+							id++;
+							id = '#' + id;
+							game_on = gameOver(board);						
+
+							setTimeout(function(){								
+								$(id).attr('src', 'media/o.jpg')
+								turn++;		
+							},500)
+							
+						}
+					}
+				}
+			
+				if (game_on != true){
+					if (game_on == X){
+						$('#win').css('display', 'block');
+						board = [BLANK, BLANK, BLANK, BLANK, BLANK, BLANK, BLANK, BLANK, BLANK]
+						turn = 1;
+						game_on = true;
+						addWinner();
+					}
+					else if(game_on == O){
+						setTimeout(function(){
+							$('#lose').css('display', 'block');
+						},500)
+						board = [BLANK, BLANK, BLANK, BLANK, BLANK, BLANK, BLANK, BLANK, BLANK]
+						turn = 1;
+						game_on = true;					
+					}6
+					return;
+				}
+
+				else if (game_on == true && turn > 9){
+					$('#tie').css('display', 'block');
+					board = [BLANK, BLANK, BLANK, BLANK, BLANK, BLANK, BLANK, BLANK, BLANK]
+					turn = 1;
+					game_on = true;
+					return;			
+				}
+			})
+		}
+
+	</script>
+
+</head>
+
+<body>
+	<h1>TIC TAC TOE</h1>
+	<nav>
+		<ul>
+		 	<li><a href ="index.html">Play</a></li>
+		  	<li><a href ="halloffame.html">HighScores</a></li>
+		</ul>
+	</nav>
+		<form id="avatarPick" align="center" onsubmit="GenAvatars(); return false" >
+		Enter a username to play:<br>
+		<input type="text" id="username"><button type="button" onclick="GenAvatars()">Enter</button>
+		
+</form>
+<script language="javascript">	
+	function GenAvatars(){
+			var name = sanitize(document.getElementById("username").value);
+			document.getElementById("User_place").innerHTML = name;
+			document.getElementById("greet").innerHTML = "Hi, "+name+"! Click which avatar you would like to use."
+			document.getElementById("option1").src = "https://robohash.org/"+name+".png/set_set2/?size=100x100"
+			document.getElementById("option2").src = "https://robohash.org/"+name+".png/set_set4/?size=100x100"
+			document.getElementById("option3").src = "https://robohash.org/"+name+".png/set_set5/?size=100x100"
+			document.getElementById("user_avatar").src = "https://robohash.org/"+name+".png/set_set5/?size=100x100";
+			document.getElementById("bot_avatar").src = "https://robohash.org/"+name+".png/set_set1/?size=100x100"
+			$("#choices").fadeIn(250);
+			$("#avatarPick").hide();
+		}
+	$(document).ready(function(){
+		$("#choices").hide();
+		$(".board").hide();
+		$("#user_avatar").hide();
+		$("#bot_avatar").hide();
+		$("#option1").click(function(){
+			var name = document.getElementById("username").value;
+			document.getElementById("user_avatar").src = "https://robohash.org/"+name+".png/set_set2/?size=100x100";
+			$("#choices").hide();
+			$("#user_avatar").fadeIn(250);
+			$("#bot_avatar").fadeIn(250);
+			$(".board").fadeIn(250);
+		});
+		$("#option2").click(function(){
+			var name = document.getElementById("username").value;
+			document.getElementById("user_avatar").src = "https://robohash.org/"+name+".png/set_set4/?size=100x100";
+			$("#choices").hide();
+			$("#user_avatar").fadeIn(250);
+			$("#bot_avatar").fadeIn(250);
+			$(".board").fadeIn(250);
+		});
+		$("#option3").click(function(){
+			var name = document.getElementById("username").value;
+			document.getElementById("user_avatar").src = "https://robohash.org/"+name+".png/set_set5/?size=100x100";
+			$("#choices").hide();
+			$("#user_avatar").fadeIn(250);
+			$("#bot_avatar").fadeIn(250);
+			$(".board").fadeIn(250);
+		});
+	});
+</script>
+<div align="center" id="choices">
+	<p1 id="greet"></p1>
+	<img id="option1" src="https://robohash.org/user.png/set_set2/?size=100x100">
+	<img id="option2" src="https://robohash.org/user.png/set_set4/?size=100x100">
+	<img id="option3" src="https://robohash.org/user.png/set_set5/?size=100x100">
+</div>
+	<div class="board">
+		<div class="avatartop">
+			<img id="user_avatar" src="https://robohash.org/user.png/set_set5/?size=100x100">
+				<h2 id ="User_place"></h2>
+		</div>
+		<div class="row">
+			<div class="column">
+				<img class="box" id="1" src="media/blank.jpg" alt="blank">
+			</div>
+			<div class="column">
+				<img class="box" id="2" src="media/blank.jpg" alt="blank">
+			</div>
+			<div class="column">
+				<img class="box" id="3" src="media/blank.jpg" alt="blank">
+			</div>
+		</div>
+		<div class="row">
+			<div class="column">
+				<img class="box" id="4" src="media/blank.jpg" alt="blank">
+			</div>
+			<div class="column">
+				<img class="box" id="5" src="media/blank.jpg" alt="blank">
+			</div>
+			<div class="column">
+				<img class="box" id="6" src="media/blank.jpg" alt="blank">
+			</div>
+		</div>
+		<div class="row">
+			<div class="column">
+				<img class="box" id="7" src="media/blank.jpg" alt="blank">
+			</div>
+			<div class="column">
+				<img class="box" id="8" src="media/blank.jpg" alt="blank">
+			</div>
+			<div class="column">
+				<img class="box" id="9" src="media/blank.jpg" alt="blank">
+			</div>
+		</div>
+		<div class="avatarbottom">
+			<img align="center" id="bot_avatar" src="https://robohash.org/bot.png/set_set1/?size=100x100">
+			<h2>Computer Opponent</h2>
+		</div>
+		
+		<div class="banner" id="win"> 
+		<h1>you won :D</h1>
+		<p>You have been added to the <a href="halloffame.html">hall of fame!</a></p>
+		<button onclick="refresh()"> Play Again! </button>
+	</div>
+
+	<div class="banner" id="lose"> 
+		<h1>you lost :(</h1>
+		<button onclick="refresh()"> Play Again? </button>
+	</div>
+
+	<div class="banner" id="tie">
+		<h1>you tied :/</h1>
+		<button onclick="refresh()"> Play Again? </button>
+	</div>
+	</div>
+
+	
+</body>
+</html>

@@ -1,0 +1,148 @@
+#choices {
+	height: 100px;
+	width: 100px;
+}
+#bot_avatar {
+	height: 30%;
+	width: auto;
+	box-sizing: border-box;
+
+}
+#user_avatar {
+	height: 100px;
+	width: auto;
+	box-sizing: border-box;
+
+}
+/* Create three equal columns that floats next to each other */
+.column {
+	float: left;
+	width: 32%;
+	height: 90%;
+	padding: 0.0% 0.3%;
+	box-sizing: border-box;
+}
+/* Clear floats after the columns */
+.row:after {
+	content: "";
+	display: table;
+	clear: both;
+}
+.row{
+	margin: auto;
+	width: 70%;
+	height: 70%;
+	box-sizing: border-box;
+}
+.box{
+	height: 100%;
+	width: 100%;
+	box-sizing: border-box;
+}
+.board{
+	width: 60%;
+	max-height: 80%;
+	margin: auto;
+	box-sizing: border-box;
+	position: relative;
+}
+h2{
+	font-family: 'Courier New', Courier, monospace;
+	font-size: small;
+}
+h1{
+	font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+	/* font-size: ; */
+	text-align: center;
+}
+.avatartop{
+	text-align: left;
+}
+.avatarbottom{
+	text-align: right;
+}
+
+.banner{
+	position: absolute;
+	top: 30%;
+	right: 25%;
+	background-color: white;
+	justify-content: center;
+	margin: auto;
+	width: 50%;
+	border: 2px solid black;
+	display: none;
+}
+
+p, h1{
+	text-align: center;
+}
+
+.banner button{
+	border-radius: 9px;
+	background-color: #F1F1F1;
+	padding: 9px 13px;
+	display: block;
+	margin: 12px auto;
+	font-size: 18px;
+	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+nav{
+	text-align: center;
+	box-sizing: border-box;
+	font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+	border-bottom: 1px solid #000000;
+	border-top: 1px solid #000000;
+	margin: 20px 15%;
+	
+}
+form {
+	font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+nav a{
+	color: #000000;
+	font-size: 15px;
+	text-decoration: none;
+}
+nav ul{
+	list-style-type: none;
+	margin: auto;
+	box-sizing: border-box;
+}
+nav ul li{
+	display: inline-block;
+	padding: 5px 40px;
+	box-sizing: border-box;
+}
+nav ul li a:hover{
+	color: #FFFFFF;
+	background: #000000;
+	box-sizing: border-box;
+	padding: 2px 6px;
+}
+
+/* got some help here from w3schools: https://www.w3schools.com/Css/css_table.asp */
+#data{
+	font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+	border-collapse: collapse;
+	width: 65%;
+	margin: auto;
+}
+
+#data td, #data th {
+	border: 1px solid #ddd;
+	padding: 5px;
+	text-align: center;
+}
+
+#data tr:nth-child(even){background-color: #f2f2f2;}
+
+#data tr:hover {background-color: #ddd;}
+
+#data th {
+padding-top: 8px;
+padding-bottom: 8px;
+text-align: center;
+background-color: black;
+color: white;
+}
